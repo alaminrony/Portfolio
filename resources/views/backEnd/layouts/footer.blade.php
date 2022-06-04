@@ -1,6 +1,6 @@
 <!-- /.content-wrapper -->
 <footer class="main-footer">
-    <strong>Copyright &copy; {{date('Y')}} <a href="https://goldeninfotech.com.bd">Golden Infotech</a>.</strong>
+    <strong>Copyright &copy; {{date('Y')}} <a href="https://alaminrony.com">Alamin Rony</a>.</strong>
     All rights reserved.
 </footer>
 

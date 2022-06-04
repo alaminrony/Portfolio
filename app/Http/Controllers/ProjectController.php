@@ -13,7 +13,7 @@ use App\Models\Airport;
 use App\Models\District;
 use App\Models\Thana;
 use App\Models\Note;
-use App\Models\VisaApplication;
+use App\Models\Project;
 use App\Models\User;
 use App\Models\Issue;
 use App\Models\Transaction;
@@ -26,86 +26,42 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExcelExport;
 use PDF;
 
-class VisaEntryController extends Controller {
+class ProjectController extends Controller {
 
     public function index(Request $request) {
 
-        $banksArr = ['' => __('lang.SELECT_BANK')] + BankAccount::pluck('bank_name', 'id')->toArray();
-        $targets = VisaApplication::select('id', 'customer_code', 'name', 'passport_no', 'mobile_no', 'created_at')->orderBy('id', 'desc');
+        $targets = Project::orderBy('serial', 'asc');
 
         if (!empty($request->search_value)) {
             $searchText = $request->search_value;
             $targets->where(function ($query) use ($searchText) {
-                $query->where('customer_code', 'like', "%{$searchText}%")
-                        ->orWhere('name', 'like', "%{$searchText}%")
-                        ->orWhere('passport_no', 'like', "%{$searchText}%")
-                        ->orWhere('father_name', 'like', "%{$searchText}%")
-                        ->orWhere('mobile_no', 'like', "%{$searchText}%");
+                $query->where('project_name', 'like', "%{$searchText}%")
+                        ->orWhere('details', 'like', "%{$searchText}%");
             });
         }
+        $targets = $targets->paginate(10);
 
-        if ($request->view == 'print') {
-            $targets = $targets->get();
-            return view('backEnd.visa.print.print-visa-list')->with(compact('targets', 'request'));
-        } else if ($request->view == 'pdf') {
-            $targets = $targets->get();
-            $pdf = PDF::loadView('backEnd.visa.print.print-visa-list', compact('targets', 'request'))
-                    ->setPaper('a4', 'portrait')
-                    ->setOptions(['defaultFont' => 'sans-serif']);
-            $fileName = "visa_entry_list_" . date('d_m_Y_H_i_s');
-            return $pdf->download("$fileName.pdf");
-        } else if ($request->view == 'excel') {
-            $targets = $targets->get();
-            $viewFile = 'backEnd.visa.print.print-visa-list';
-            $fileName = "visa_entry_list_" . date('d_m_Y_H_i_s');
-            $downLoadFileName = "$fileName.xlsx";
-            $data['targets'] = $targets;
-            $data['request'] = $request;
-            return Excel::download(new ExcelExport($viewFile, $data), $downLoadFileName);
-        }
-        $targets = $targets->paginate(5);
-
-//        echo "<pre>";        print_r($targets->toArray());exit;
+//        echo "<pre>";
+//        print_r($targets->toArray());
+//        exit;
 
         $data['title'] = 'Visa List';
         $data['meta_tag'] = 'Visa List, rafiq & sons';
         $data['meta_description'] = 'Visa List, rafiq & sons';
 
-        return view('backEnd.visa.index')->with(compact('data', 'targets'));
+        return view('backEnd.project.index')->with(compact('data', 'targets'));
     }
 
     public function create(Request $request) {
-
-        $countries = ['' => __('lang.SELECT_COUNTRY')] + Country::select(DB::raw("CONCAT(name,' (',iso_code_2,')') as country_name"), 'id')->pluck('country_name', 'id')->toArray();
-
-        $entryTypes = ['' => __('lang.SELECT_ENTRY_TYPE')] + EntryTypes::where('status', '1')->where('category_id', '1')->pluck('title', 'id')->toArray();
-
-        $years = ['' => __('lang.SELECT_YEAR')] + Year::pluck('year', 'year')->toArray();
-
-        $airports = ['' => __('lang.SELECT_AIRPORT')] + Airport::select(DB::raw("CONCAT(name,' (',code,')',' -- (',countryCode,')') as name"), 'countryCode', 'code')->orderBy('countryCode')->pluck('name', 'name')->toArray();
-
-        $districts = ['' => __('lang.SELECT_DISTRICT')] + District::orderBy('name')->pluck('name', 'id')->toArray();
-
-        $thanas = ['' => __('lang.SELECT_THANA')] + Thana::orderBy('name')->pluck('name', 'id')->toArray();
-
-        if (!empty($request->countryId) && !empty($request->typeId) && !empty($request->year)) {
-            $type = explode(' ', $entryTypes[$request->typeId]);
-            $year = $years[$request->year];
-            $countryName = explode(' ', str_replace(array('(', ')'), '', $countries[$request->countryId]));
-
-            $latestVisa = VisaApplication::select('id')->latest()->take(1)->first();
-
-            $latestVisaId = !empty($latestVisa->id) ? $latestVisa->id + 1 : '0';
-
-            $customerCode = end($countryName) . '-' . $type[0] . '-' . $year . '-' . $latestVisaId;
-            return $customerCode;
-        }
-
+        $siteName = Setting::get();
+        echo "<pre>";
+        print_r($siteName->toArray());
+        exit;
         $data['title'] = 'Visa Entry';
         $data['meta_tag'] = 'visa entry, rafiq & sons';
         $data['meta_description'] = 'visa entry, rafiq & sons';
 
-        return view('backEnd.visa.create', compact('data', 'countries', 'entryTypes', 'years', 'airports', 'districts', 'thanas'));
+        return view('backEnd.visa.create', compact('data'));
     }
 
     public function generateCusCode(Request $request) {
@@ -167,7 +123,7 @@ class VisaEntryController extends Controller {
             return redirect()->route('visaEntry.create')->withInput()->withErrors($validator);
         }
 
-        $target = new VisaApplication;
+        $target = new Project;
         $target->country_id = $request->country_id;
         $target->type_id = $request->type_id;
         $target->year = $request->year;
@@ -251,7 +207,7 @@ class VisaEntryController extends Controller {
     }
 
     public function view(Request $request) {
-        $target = VisaApplication::with('attachments')->findOrFail($request->id);
+        $target = Project::with('attachments')->findOrFail($request->id);
 
         $notes = Note::where('application_id', $request->id)->where('issue_id', '1')->get();
 //        echo "<pre>";print_r($target->toArray());exit;
@@ -299,7 +255,7 @@ class VisaEntryController extends Controller {
 
     public function edit(Request $request) {
 
-        $target = VisaApplication::with('attachments')->findOrFail($request->id);
+        $target = Project::with('attachments')->findOrFail($request->id);
 
         $notes = Note::where('application_id', $request->id)->where('issue_id', '1')->get();
 
@@ -375,7 +331,7 @@ class VisaEntryController extends Controller {
             return redirect()->route('visaEntry.edit', $request->id)->withInput()->withErrors($validator);
         }
 
-        $target = VisaApplication::findOrFail($request->id);
+        $target = Project::findOrFail($request->id);
         $target->country_id = $request->country_id;
         $target->type_id = $request->type_id;
         $target->year = $request->year;
@@ -491,7 +447,7 @@ class VisaEntryController extends Controller {
     }
 
     public function destroy(Request $request) {
-        $target = VisaApplication::findOrFail($request->id);
+        $target = Project::findOrFail($request->id);
         if ($target->delete()) {
             $notes = Note::where('application_id', $request->id)->where('issue_id', '1')->delete();
             Session::flash('success', __('lang.VISA_DELETED_SUCCESSFULLY'));
@@ -499,84 +455,9 @@ class VisaEntryController extends Controller {
         }
     }
 
-    public function transactionList(Request $request) {
-//       echo "<pre>";print_r($request->all());exit;
-        $users = ['' => __('lang.SELECT_USER')] + User::join('user_roles', 'user_roles.id', 'users.role_id')->select(DB::raw("CONCAT(users.name,' (',user_roles.role_name,')') as name"), 'users.id as id')->pluck('name', 'id')->toArray();
-        $transactionTypeArr = ['' => __('lang.SELECT_TR_TYPE'), 'in' => 'Cash In', 'out' => 'Cash Out'];
-        $bankAccountArr = BankAccount::select(DB::raw("CONCAT(bank_name,' => ',account_name,' (',account_no,')') as bank_account"), 'id')->pluck('bank_account', 'id')->toArray();
-        $issues = ['1' => 'Visa', '2' => 'Passport'];
-
-        $total_transaction = Transaction::where('application_id', $request->id)->where('issue_id', '1')->sum('amount');
-        $total_in = Transaction::where('application_id', $request->id)->where('issue_id', '1')->where('transaction_type', 'in')->sum('amount');
-        $total_out = Transaction::where('application_id', $request->id)->where('issue_id', '1')->where('transaction_type', 'out')->sum('amount');
-        $total_profit = $total_in - $total_out;
-
-        $targets = Transaction::where('application_id', $request->id)->where('issue_id', '1')->orderBy('id', 'asc');
-
-        if (!empty($request->user_id)) {
-            $targets = $targets->where('user_id', $request->user_id);
-        }
-        if (!empty($request->transaction_type)) {
-            $targets = $targets->where('transaction_type', $request->transaction_type);
-        }
-        if (!empty($request->search_value)) {
-            $searchText = $request->search_value;
-            $targets->where(function ($query) use ($searchText) {
-                $query->where('cheque_no', 'like', "%{$searchText}%")
-                        ->orWhere('amount', 'like', "%{$searchText}%");
-            });
-        }
-
-        if ($request->view == 'print') {
-            $targets = $targets->get();
-            return view('backEnd.transaction.print.tr_print')->with(compact('targets', 'request', 'users', 'transactionTypeArr', 'bankAccountArr', 'issues'));
-        } else if ($request->view == 'pdf') {
-            $targets = $targets->get();
-            $pdf = PDF::loadView('backEnd.transaction.print.tr_print', compact('targets', 'request', 'users', 'transactionTypeArr', 'bankAccountArr', 'issues'))
-                    ->setPaper('a4', 'portrait')
-                    ->setOptions(['defaultFont' => 'sans-serif']);
-            $fileName = "transaction_list_" . date('d_m_Y_H_i_s');
-            return $pdf->download("$fileName.pdf");
-        } else if ($request->view == 'excel') {
-            $targets = $targets->get();
-            $viewFile = 'backEnd.transaction.print.tr_print';
-            $fileName = "transaction_list_" . date('d_m_Y_H_i_s');
-            $downLoadFileName = "$fileName.xlsx";
-            $data['targets'] = $targets;
-            $data['request'] = $request;
-            $data['users'] = $users;
-            $data['transactionTypeArr'] = $transactionTypeArr;
-            $data['bankAccountArr'] = $bankAccountArr;
-            $data['issues'] = $issues;
-            return Excel::download(new ExcelExport($viewFile, $data), $downLoadFileName);
-        }
-
-        $targets = $targets->paginate(5);
-
-//         echo "<pre>";print_r($targets->toArray());exit;
-
-        $application_id = $request->id;
-        $transactionListOf = 'visa-entry';
-        $issue_id = '1';
-        $searchFormRoute = 'visaEntry.filter';
-        $applicationDetails = VisaApplication::select('customer_code', 'name', 'passport_no')->where('id', $request->id)->first();
-
-//        echo "<pre>";print_r($applicationDetails->toArray());exit;
-
-        $data['title'] = 'Transaction';
-        $data['meta_tag'] = 'Transaction page, rafiq & sons';
-        $data['meta_description'] = 'Transaction, rafiq & sons';
-        return view('backEnd.transaction.index')->with(compact('targets', 'issues', 'bankAccountArr', 'users', 'transactionTypeArr', 'data', 'application_id', 'total_transaction', 'total_in', 'total_out', 'total_profit', 'issue_id', 'applicationDetails', 'searchFormRoute', 'transactionListOf'));
-    }
-
-    public function filter(Request $request) {
-        $url = 'user_id=' . $request->user_id . '&transaction_type=' . $request->transaction_type . '&search_value=' . $request->search_value;
-        return redirect('admin/visa-entry/' . $request->id . '/transaction-list?' . $url);
-    }
-
-    public function VisaFilter(Request $request) {
+    public function projectFilter(Request $request) {
         $url = 'filter=true' . '&search_value=' . $request->search_value;
-        return redirect('admin/visa-entry?' . $url);
+        return redirect('admin/project?' . $url);
     }
 
 }

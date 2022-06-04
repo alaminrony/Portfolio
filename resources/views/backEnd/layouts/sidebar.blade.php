@@ -57,200 +57,32 @@ $route = Request::route()->getName();
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{$route == 'visaEntry.index' || $route == 'visaEntry.create' || $route == 'visaEntry.view' || $route == 'visaEntry.edit'  ? "menu-open" :''}}">
-                    <a href="#" class="nav-link {{$route == 'visaEntry.index' || $route == 'visaEntry.create' || $route == 'visaEntry.view' || $route == 'visaEntry.edit' ? "active" :''}}">
+
+                <li class="nav-item {{$route == 'project.index' || $route == 'project.create' || $route == 'project.view' || $route == 'project.edit'  ? "menu-open" :''}}">
+                    <a href="#" class="nav-link {{$route == 'project.index' || $route == 'project.create' || $route == 'project.view' || $route == 'project.edit' ? "active" :''}}">
                         <i class="nav-icon fab fa-cc-visa"></i>
                         <p>
-                            @lang('lang.VISA')
+                            @lang('lang.PROJECT')
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{route('visaEntry.index')}}" class="nav-link {{$route == 'visaEntry.index' ? "active" :''}}">
+                            <a href="{{route('project.index')}}" class="nav-link {{$route == 'project.index' ? "active" :''}}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.VISA_LIST')</p>
+                                <p>@lang('lang.PROJECT_LIST')</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{route('visaEntry.create')}}" class="nav-link {{$route == 'visaEntry.create' ? "active" :''}}">
+                            <a href="{{route('project.create')}}" class="nav-link {{$route == 'project.create' ? "active" :''}}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.VISA_ENTRY')</p>
+                                <p>@lang('lang.CREATE_PROJECT')</p>
                             </a>
                         </li>
                     </ul>
                 </li>
 
-
-                <li class="nav-item {{$route == 'passportEntry.index' || $route == 'passportEntry.create' || $route == 'passportEntry.view' || $route == 'passportEntry.edit'  ? "menu-open" :''}}">
-                    <a href="#" class="nav-link {{$route == 'passportEntry.index' || $route == 'passportEntry.create' || $route == 'passportEntry.view' || $route == 'passportEntry.edit' ? "active" :''}}">
-                        <i class="nav-icon fas fa-passport"></i>
-                        <p>
-                            @lang('lang.PASSPORT')
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('passportEntry.index')}}" class="nav-link {{$route == 'passportEntry.index' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.PASSPORT_LIST')</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{route('passportEntry.create')}}" class="nav-link {{$route == 'passportEntry.create' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.PASSPORT_ENTRY')</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-                <li class="nav-item {{$route == 'medicalEntry.index' || $route == 'medicalEntry.create' || $route == 'medicalEntry.view' || $route == 'medicalEntry.edit'  ? "menu-open" :''}}">
-                    <a href="#" class="nav-link {{$route == 'medicalEntry.index' || $route == 'medicalEntry.create' || $route == 'medicalEntry.view' || $route == 'medicalEntry.edit' ? "active" :''}}">
-                        <i class="nav-icon fa fa-medkit"></i>
-                        <p>
-                            @lang('lang.MEDICAL')
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('medicalEntry.index')}}" class="nav-link {{$route == 'medicalEntry.index' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.MEDICAL_LIST')</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{route('medicalEntry.create')}}" class="nav-link {{$route == 'medicalEntry.create' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.MEDICAL_ENTRY')</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-                <li class="nav-item {{$route == 'ticketEntry.index' || $route == 'ticketEntry.create' || $route == 'ticketEntry.view' || $route == 'ticketEntry.edit'  ? "menu-open" :''}}">
-                    <a href="#" class="nav-link {{$route == 'ticketEntry.index' || $route == 'ticketEntry.create' || $route == 'ticketEntry.view' || $route == 'ticketEntry.edit' ? "active" :''}}">
-                        <i class="nav-icon fa fa-ticket-alt"></i>
-                        <p>
-                            @lang('lang.TICKET')
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('ticketEntry.index')}}" class="nav-link {{$route == 'ticketEntry.index' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.TICKET_LIST')</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{route('ticketEntry.create')}}" class="nav-link {{$route == 'ticketEntry.create' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.TICKET_ENTRY')</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="nav-item {{$route == 'packageEntry.index' || $route == 'packageEntry.create' || $route == 'packageEntry.view' || $route == 'packageEntry.edit'  ? "menu-open" :''}}">
-                    <a href="#" class="nav-link {{$route == 'packageEntry.index' || $route == 'packageEntry.create' || $route == 'packageEntry.view' || $route == 'packageEntry.edit' ? "active" :''}}">
-                        <i class="nav-icon fas fa-plane-departure"></i>
-                        <p>
-                            @lang('lang.PACKAGE_TOUR')
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('packageEntry.index')}}" class="nav-link {{$route == 'packageEntry.index' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.PACKAGE_LIST')</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{route('packageEntry.create')}}" class="nav-link {{$route == 'packageEntry.create' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.PACKAGE_ENTRY')</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-                <li class="nav-item {{$route == 'bankAccount.index' || $route == 'bankAccount.create' || $route == 'pendingCheque.index' || $route == 'head.index'? "menu-open" :''}}">
-                    <a href="#" class="nav-link {{$route == 'bankAccount.index' || $route == 'bankAccount.create' || $route == 'pendingCheque.index' || $route == 'head.index' ? "active" :''}}">
-                        <i class="nav-icon fa fa-university"></i>
-                        <p>
-                            @lang('lang.BANK_MANAGEMENT')
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('bankAccount.index')}}" class="nav-link {{$route == 'bankAccount.index' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.BANK_LIST')</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('bankAccount.create')}}" class="nav-link {{$route == 'bankAccount.create' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.CREATE_BANK')</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('pendingCheque.index')}}" class="nav-link {{$route == 'pendingCheque.index' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.PENDING_CHEQUE')</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{route('head.index')}}" class="nav-link {{$route == 'head.index' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.ISSUE')</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item {{$route == 'payable.index' || $route == 'receivable.index' || $route == 'report.transactionList' ? "menu-open" :''}}">
-                    <a href="#" class="nav-link {{$route == 'payable.index' || $route == 'receivable.index' || $route == 'report.transactionList' ? "active" :''}}">
-                        <i class="nav-icon fa fa-chart-pie"></i>
-                        <p>
-                            @lang('lang.REPORT_SIDEBAR')
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('payable.index')}}" class="nav-link {{$route == 'payable.index' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.ACCOUNT_PAYABLE')</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('receivable.index')}}" class="nav-link {{$route == 'receivable.index' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.ACCOUNT_REVEIVABLE')</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('report.transactionList')}}" class="nav-link {{$route == 'report.transactionList' ? "active" :''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>@lang('lang.TRANSACTION_LIST')</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
                 <li class="nav-item {{$route == 'setting.index'  ? "menu-open" :''}}"">
                     <a href="#" class="nav-link {{$route == 'setting.index' ? "active" :''}}">
                         <i class="nav-icon fa fa-cog"></i>

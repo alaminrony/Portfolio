@@ -10,9 +10,9 @@ class DashboardController extends Controller {
 
     public function index() {
 
-        $data['transactionCount'] = Transaction::select(DB::raw("COUNT(id) as count_value"),DB::raw("SUM(amount) as total_tr"))->first();
-        $data['transactionInCount'] = Transaction::where('transaction_type', 'in')->select(DB::raw("COUNT(id) as count_value"),DB::raw("SUM(amount) as total_tr"))->first();
-        $data['transactionOutCount'] = Transaction::where('transaction_type', 'out')->select(DB::raw("COUNT(id) as count_value"),DB::raw("SUM(amount) as total_tr"))->first();;
+//        $data['transactionCount'] = Transaction::select(DB::raw("COUNT(id) as count_value"),DB::raw("SUM(amount) as total_tr"))->first();
+//        $data['transactionInCount'] = Transaction::where('transaction_type', 'in')->select(DB::raw("COUNT(id) as count_value"),DB::raw("SUM(amount) as total_tr"))->first();
+//        $data['transactionOutCount'] = Transaction::where('transaction_type', 'out')->select(DB::raw("COUNT(id) as count_value"),DB::raw("SUM(amount) as total_tr"))->first();;
 
         $data['user'] = User::count();
         $data['supplier'] = User::where('role_id', '3')->count();
