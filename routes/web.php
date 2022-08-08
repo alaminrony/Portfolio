@@ -74,7 +74,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
     Route::get('project', 'ProjectController@index')->name('project.index');
     Route::get('project-filter', 'ProjectController@projectFilter')->name('project.filter');
     Route::get('project/create', 'ProjectController@create')->name('project.create');
-    Route::post('project/generateCusCode', 'ProjectController@generateCusCode')->name('generateCusCode.create');
     Route::post('project/store', 'ProjectController@store')->name('project.store');
     Route::get('project/{id}/view', 'ProjectController@view')->name('project.view');
     Route::get('project/{id}/edit', 'ProjectController@edit')->name('project.edit');

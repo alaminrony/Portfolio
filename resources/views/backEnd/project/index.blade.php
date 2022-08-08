@@ -74,6 +74,8 @@
                                         <th>@lang('lang.DESCRIPTION')</th>
                                         <th>@lang('lang.GIT_LINK')</th>
                                         <th>@lang('lang.LIVE_LINK')</th>
+                                        <th>@lang('lang.SERIAL')</th>
+                                        <th>@lang('lang.PUBLISHED')</th>
                                         <th>@lang('lang.CREATED_AT')</th>
                                         <th>@lang('lang.ACTION')</th>
                                     </tr>
@@ -84,15 +86,17 @@
                                     @foreach($targets as $target)
                                     <tr>
                                         <td>{{++$i}}</td>
-                                        <td>{{$target->project_name}}</td>
+                                        <td>{{$target->name}}</td>
                                         <td>{!!Str::limit($target->details,60) !!}</td>
-                                        <td>{{$target->git_link}}</td>
-                                        <td>{{$target->live_link}}</td>
+                                        <td>{{Str::limit($target->git_link,30)}}</td>
+                                        <td>{{Str::limit($target->live_link,30)}}</td>
+                                        <td>{{$target->serial}}</td>
+                                        <td>{{$target->published_status == '1' ? "Yes" : "No"}}</td>
                                         <td>{{Helper::dateFormat($target->created_at)}}</td>
                                         <td width="20%">
                                             <div style="float: left;margin-right:4px;">
-                                                <a class="btn btn-success btn-sm" title="@lang('lang.VIEW_VISA')" href="{{route('project.view',$target->id)}}"><i class="fa fa-eye"></i></a>
-                                                <a class="btn btn-warning btn-sm"  title="@lang('lang.EDIT_VISA')" href="{{route('project.edit',$target->id)}}"><i class="fa fa-edit"></i></a>
+                                                <a class="btn btn-success btn-sm" title="@lang('lang.VIEW_PROJECT')" href="{{route('project.view',$target->id)}}"><i class="fa fa-eye"></i></a>
+                                                <a class="btn btn-warning btn-sm"  title="@lang('lang.EDIT_PROJECT')" href="{{route('project.edit',$target->id)}}"><i class="fa fa-edit"></i></a>
                                             </div>
                                             <div style="float: left;">
                                                 {!!Form::open(['route'=>['project.destroy',$target->id]])!!}

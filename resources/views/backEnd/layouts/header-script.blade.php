@@ -35,5 +35,6 @@
         <link rel="stylesheet" href="{{asset('backend/dist/css/sweetalert.min.css')}}">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
         <link rel="stylesheet" href="{{asset('backend/plugins/select2/css/select2.min.css')}}">
+        <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
         @stack('css')
     </head>

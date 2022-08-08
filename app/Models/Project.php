@@ -12,7 +12,7 @@ class Project extends Model {
     use HasFactory;
 
     public function attachments() {
-        return $this->hasMany(DocumentAttachment::class, 'application_id');
+        return $this->hasMany(DocumentAttachment::class, 'project_id');
     }
 
 }

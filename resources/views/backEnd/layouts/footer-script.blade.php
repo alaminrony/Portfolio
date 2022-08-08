@@ -35,6 +35,7 @@ $.widget.bridge('uibutton', $.ui.button)
 <script src="{{asset('backend/dist/js/sweetalert.min.js')}}" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 <script src="{{asset('backend/plugins/select2/js/select2.full.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 @stack('script')
 </body>
 </html>
